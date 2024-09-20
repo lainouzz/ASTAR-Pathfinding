@@ -15,8 +15,8 @@ public class RandomWallSpawn : MonoBehaviour
     public float offset;
     public int wallAmount;
     
-    public Vector3 minScale = new Vector3(1f, 1f, 1f);
-    public Vector3 maxScale = new Vector3(8, 1f, 8f);
+    public Vector3 minScale = new Vector3(3f, 1.5f, 3f);
+    public Vector3 maxScale = new Vector3(3, 2f, 3f);
     public float distance;
         
     // Start is called before the first frame update
@@ -43,9 +43,9 @@ public class RandomWallSpawn : MonoBehaviour
                     
                     //random scale on x,y,z
                     Vector3 randomScale = new Vector3(
-                        Random.Range(minScale.x, maxScale.x),
+                        Random.Range(maxScale.x, maxScale.x),
                         Random.Range(minScale.y, maxScale.y),
-                        Random.Range(minScale.z, maxScale.z));
+                        Random.Range(maxScale.z, maxScale.z));
 
                     newWall.transform.localScale = randomScale;
                     
@@ -53,7 +53,7 @@ public class RandomWallSpawn : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("something wrong");
+                    return;
                 }
             }
             else
