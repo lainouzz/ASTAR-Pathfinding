@@ -325,7 +325,7 @@ MonoBehaviour:
   wallAmount: 10
   minScale: {x: 2, y: 1, z: 2}
   maxScale: {x: 3, y: 2.5, z: 3}
-  distance: 0
+  minimumDistance: 5
 --- !u!1 &250513194
 GameObject:
   m_ObjectHideFlags: 0
@@ -1246,7 +1246,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 18.7, z: 0.5}
+  m_LocalPosition: {x: 0, y: 21.9, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -17,8 +17,10 @@ public class RandomWallSpawn : MonoBehaviour
     
     public Vector3 minScale = new Vector3(3f, 1.5f, 3f);
     public Vector3 maxScale = new Vector3(3, 2f, 3f);
-    public float distance;
-        
+
+    private List<Vector3> spawnedWallsPos = new List<Vector3>();
+    Vector3 newRandomPos;
+    [SerializeField]private float minimumDistance;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,37 +31,40 @@ public class RandomWallSpawn : MonoBehaviour
     {
         for (int i = 0; i < wallAmount; i++)
         {
-            //random position x,z
-            Vector3 newRandomPos = new Vector3(Random.Range(meshCollider.bounds.extents.x - offset, -meshCollider.bounds.extents.x + offset),
-                .25f, Random.Range(meshCollider.bounds.extents.z - offset, -meshCollider.bounds.extents.z + offset));
             
-            if (i < walls.Length)
-            {
-                distance = Vector3.Distance(walls[i].transform.position, startPosition.position);
-                
-                if (distance > 4f)
-                {
-                    GameObject newWall = Instantiate(walls[i], newRandomPos, Quaternion.identity);
-                    
-                    //random scale on x,y,z
-                    Vector3 randomScale = new Vector3(
-                        Random.Range(maxScale.x, maxScale.x),
-                        Random.Range(minScale.y, maxScale.y),
-                        Random.Range(maxScale.z, maxScale.z));
+            bool validPosition = false;
 
-                    newWall.transform.localScale = randomScale;
-                    
-                    Debug.Log("wall name: " + walls[i].name);
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else
+            while (!validPosition)
             {
-                Debug.LogWarning("Index " + i + " exceeds the walls array length.");
+                newRandomPos = new Vector3(
+                    x: Random.Range(meshCollider.bounds.extents.x - offset, -meshCollider.bounds.extents.x + offset),
+                    y: 0.25f,
+                    z: Random.Range(meshCollider.bounds.extents.z - offset, -meshCollider.bounds.extents.z + offset)
+                    );
+                
+                validPosition = true;
+                foreach (Vector3 pos in spawnedWallsPos)
+                {
+                    float distance = Vector3.Distance(pos, newRandomPos);
+                    if (distance < minimumDistance)
+                    {
+                        validPosition = false;
+                        break;
+                    }
+                }
             }
+
+            GameObject newWall = Instantiate(walls[i], newRandomPos, Quaternion.Euler(0, -180, 0));
+            
+            Vector3 randomScale = new Vector3(
+                x: Random.Range(maxScale.x, maxScale.x),
+                y: Random.Range(minScale.y, maxScale.y),
+                z: Random.Range(maxScale.z, maxScale.z)
+            );
+
+            newWall.transform.localScale = randomScale;
+            
+            spawnedWallsPos.Add(newRandomPos);
         }
         
         //fix timing issue by using Coroutine
