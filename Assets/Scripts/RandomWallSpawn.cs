@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,12 +9,16 @@ public class RandomWallSpawn : MonoBehaviour
 {
     public Grid grid;
     public GameObject[] walls;
+    public MeshCollider meshCollider;
+    public Transform startPosition;
     
+    public float offset;
     public int wallAmount;
-
+    
     public Vector3 minScale = new Vector3(1f, 1f, 1f);
     public Vector3 maxScale = new Vector3(8, 1f, 8f);
-    
+    public float distance;
+        
     // Start is called before the first frame update
     void Start()
     {
@@ -25,26 +30,38 @@ public class RandomWallSpawn : MonoBehaviour
         for (int i = 0; i < wallAmount; i++)
         {
             //random position x,z
-            Vector3 newRandomPos = new Vector3(Random.Range(-20f, 20f), .25f, Random.Range(-20, 20));
+            Vector3 newRandomPos = new Vector3(Random.Range(meshCollider.bounds.extents.x - offset, -meshCollider.bounds.extents.x + offset),
+                .25f, Random.Range(meshCollider.bounds.extents.z - offset, -meshCollider.bounds.extents.z + offset));
             
             if (i < walls.Length)
             {
-                //spawn newWall
-                GameObject newWall = Instantiate(walls[i], newRandomPos, Quaternion.identity);
+                distance = Vector3.Distance(walls[i].transform.position, startPosition.position);
+                
+                if (distance > 4f)
+                {
+                    GameObject newWall = Instantiate(walls[i], newRandomPos, Quaternion.identity);
+                    
+                    //random scale on x,y,z
+                    Vector3 randomScale = new Vector3(
+                        Random.Range(minScale.x, maxScale.x),
+                        Random.Range(minScale.y, maxScale.y),
+                        Random.Range(minScale.z, maxScale.z));
 
-                //random scale on x,y,z
-                Vector3 randomScale = new Vector3(
-                    Random.Range(minScale.x, maxScale.x),
-                    Random.Range(minScale.y, maxScale.y),
-                    Random.Range(minScale.z, maxScale.z));
-
-                newWall.transform.localScale = randomScale;
+                    newWall.transform.localScale = randomScale;
+                    
+                    Debug.Log("wall name: " + walls[i].name);
+                }
+                else
+                {
+                    Debug.Log("something wrong");
+                }
             }
             else
             {
                 Debug.LogWarning("Index " + i + " exceeds the walls array length.");
             }
         }
+        
         //fix timing issue by using Coroutine
         StartCoroutine(UpdateGridAfterWall());
     }

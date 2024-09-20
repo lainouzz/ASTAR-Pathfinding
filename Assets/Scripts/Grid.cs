@@ -9,7 +9,7 @@ public class Grid : MonoBehaviour
 {
     public Transform startPosition;
     public LayerMask wallLayer;
-    public Vector2 gridWorldSize;
+    public Vector3 gridWorldSize;
     public float nodeRadius;
     public float distance;
 
