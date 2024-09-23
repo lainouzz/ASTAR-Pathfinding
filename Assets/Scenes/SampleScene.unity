@@ -1266,6 +1266,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   car: {fileID: 4747087535543372341}
+  HitLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  rayDistance: 30
 --- !u!1 &999731258
 GameObject:
   m_ObjectHideFlags: 0
@@ -2458,6 +2462,10 @@ PrefabInstance:
     - target: {fileID: 3557537608659394227, guid: 0c059e455828e194dbd3d36c76b9c3f4, type: 3}
       propertyPath: m_Name
       value: taxiStartPosition
+      objectReference: {fileID: 0}
+    - target: {fileID: 3557537608659394227, guid: 0c059e455828e194dbd3d36c76b9c3f4, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7641326916514988076, guid: 0c059e455828e194dbd3d36c76b9c3f4, type: 3}
       propertyPath: m_LocalPosition.x
